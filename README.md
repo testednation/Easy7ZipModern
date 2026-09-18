@@ -273,15 +273,30 @@ Output: `src/bin/<arch>/Release/net48/Easy7ZipModern.exe` — run it from a
 folder containing the 7-Zip core (`7z.exe`, `7z.dll`), `Codecs\`, and `bin\`.
 
 ### Installers
-1. Stage payload folders with the app exe plus arch-matched `7z.exe`/`7z.dll`
-   and codecs (see `installer/Easy7ZipModern-installer.iss` — paths are at the top)
-2. Compile with [Inno Setup](https://jrsoftware.org/isinfo.php):
-   ```bash
-   ISCC.exe installer/Easy7ZipModern-installer.iss /DArch=x64
-   ISCC.exe installer/Easy7ZipModern-installer.iss /DArch=x86
+1. Build and stage the payload folders (per-arch app binary, arch-matched
+   7-Zip core and codecs — x86 binaries are downloaded from the official
+   7-Zip and 7-Zip-zstd releases and PE-verified):
+   ```powershell
+   powershell -NoProfile -ExecutionPolicy Bypass -File tools\stage-payload.ps1
    ```
-Setup binaries land in the `OutputDir` configured in the script. The `.iss`
-handles mode selection, upgrade detection, version metadata, and .NET checks.
+2. Compile with [Inno Setup](https://jrsoftware.org/isinfo.php), overriding the
+   defaults as needed:
+   ```bash
+   ISCC.exe installer/Easy7ZipModern-installer.iss /DArch=x64 \
+     /DRepoRoot=. /DPayloadRoot="%TEMP%\e7z-payload" /DAppVersion=1.4.0
+   ISCC.exe installer/Easy7ZipModern-installer.iss /DArch=x86 \
+     /DRepoRoot=. /DPayloadRoot="%TEMP%\e7z-payload" /DAppVersion=1.4.0
+   ```
+Setup binaries land in `<PayloadRoot>\output`. The `.iss` handles mode
+selection, upgrade detection, version metadata, and .NET checks.
+
+### Continuous delivery
+Pushing a tag (`v1.2.3` style) triggers
+[`.github/workflows/release.yml`](.github/workflows/release.yml): GitHub
+Actions builds the x64 and x86 installers from a clean checkout (staging +
+compile exactly as above) and attaches both setup exes to the tag's GitHub
+Release with generated release notes. It can also be run manually via
+*Run workflow*.
 
 ---
 

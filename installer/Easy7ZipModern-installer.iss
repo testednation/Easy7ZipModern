@@ -1,6 +1,13 @@
 ; Easy 7-Zip Modern — Inno Setup script
 ; Compile: ISCC.exe Easy7ZipModern-installer.iss /DArch=x64  (or /DArch=x86)
 ;
+; Optional overrides (all have local defaults):
+;   /DRepoRoot="C:\path\to\Easy7zipm"    repo checkout (src, bin, README.md)
+;   /DPayloadRoot="C:\temp\installer"    staging + output folder
+;   /DAppVersion="1.4.0"                 version embedded in the setup exe
+; tools\stage-payload.ps1 prepares the payload folders; CI passes /D overrides
+; so it never depends on absolute local paths.
+;
 ; Install modes:
 ;   Interactive   : user picks "all users (admin)" vs "me only" at start
 ;   Per-machine   : /ALLUSERS    -> Program Files, HKLM uninstall entry
@@ -12,21 +19,34 @@
 ; the previous directory, and reports the version it is upgrading from.
 
 #define MyAppName "Easy 7-Zip Modern"
-#define MyAppVersion "1.4.0"
 #define MyAppPublisher "Easy 7-Zip Modern Project"
 #define MyAppExeName "Easy7ZipModern.exe"
 ; Stable upgrade code — never change this between releases.
 #define MyAppId "{7E1A2C64-9B3D-4E7F-9C2A-5F0D8B1A4E6C}"
+
+; ---- overridable paths / version (defaults = this developer machine) ----
+#ifndef RepoRoot
+  #define RepoRoot "C:\Users\Administrator\Documents\Easy7zipm"
+#endif
+#define RepoRootN RemoveBackslashUnlessRoot(RepoRoot)
+#ifndef PayloadRoot
+  #define PayloadRoot "C:\temp\installer"
+#endif
+#define PayloadRootN RemoveBackslashUnlessRoot(PayloadRoot)
+#ifndef AppVersion
+  #define AppVersion "1.4.0"
+#endif
+#define MyAppVersion AppVersion
 
 #ifndef Arch
   #define Arch "x64"
 #endif
 
 #if Arch == "x64"
-  #define PayloadDir "C:\temp\installer\payload-x64"
+  #define PayloadDir PayloadRootN + "\payload-x64"
   #define OutSuffix "x64"
 #else
-  #define PayloadDir "C:\temp\installer\payload-x86"
+  #define PayloadDir PayloadRootN + "\payload-x86"
   #define OutSuffix "x86"
 #endif
 
@@ -40,7 +60,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
 UninstallDisplayIcon={app}\{#MyAppExeName}
-SetupIconFile=C:\Users\Administrator\Documents\Easy7zipm\src\app.ico
+SetupIconFile={#RepoRootN}\src\app.ico
 WizardStyle=modern
 ; Default to per-machine, but let the user (or /CURRENTUSER // /ALLUSERS) override.
 PrivilegesRequired=admin
@@ -60,7 +80,7 @@ VersionInfoProductName={#MyAppName}
 VersionInfoProductVersion={#MyAppVersion}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright=MIT-style license; see bundled licenses
-OutputDir=C:\temp\installer\output
+OutputDir={#PayloadRootN}\output
 OutputBaseFilename=Easy7ZipModern-{#MyAppVersion}-setup-{#OutSuffix}
 Compression=lzma2/normal
 SolidCompression=yes
@@ -78,9 +98,9 @@ Name: "contextmenu"; Description: "Add Easy 7-Zip context menu options for all f
 ; Application + arch-matched 7-Zip core + codecs + help
 Source: "{#PayloadDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "*.pdb"
 ; UniExtract plugin suite (arch-neutral, shared by both installers)
-Source: "C:\Users\Administrator\Documents\Easy7zipm\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#RepoRootN}\bin\*"; DestDir: "{app}\bin"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; Project readme
-Source: "C:\Users\Administrator\Documents\Easy7zipm\README.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#RepoRootN}\README.md"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
