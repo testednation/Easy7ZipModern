@@ -139,7 +139,6 @@ status:
 ### 🔑 Settings & Vault
 Explorer associations, password vault, and behavior toggles:
 
-![Settings & Vault](docs/screenshots/04-settings.png)
 
 ### 🔎 File-Type Scanner
 TrID signature analysis launched from the context menu or `Easy7ZipModern.exe
