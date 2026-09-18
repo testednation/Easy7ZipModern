@@ -1,0 +1,35 @@
+<Window x:Class="Easy7ZipModern.QuickExtractWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quick Extract - Easy 7-Zip Modern" Width="480" Height="220"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Background="{DynamicResource Bg.Window}" Foreground="{DynamicResource Text.Primary}"
+        FontFamily="Segoe UI" WindowStyle="SingleBorderWindow">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Margin="0,0,0,16">
+            <TextBlock x:Name="TxtTitle" Text="Extracting Archive..." FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource Text.Primary}"/>
+            <TextBlock x:Name="TxtDest" Text="Destination: ..." FontSize="11" Foreground="{DynamicResource Text.Muted}" TextTrimming="CharacterEllipsis" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Margin="0,0,0,16">
+            <ProgressBar x:Name="PbExtract" Height="10" Minimum="0" Maximum="100" Value="0" Background="{DynamicResource Bg.SurfaceAlt}" Foreground="{DynamicResource Accent}" Margin="0,8,0,0"/>
+            <Grid Margin="0,8,0,0">
+                <TextBlock x:Name="TxtCurrentItem" Text="Preparing..." FontSize="11" Foreground="{DynamicResource Text.Secondary}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" MaxWidth="350"/>
+                <TextBlock x:Name="TxtPercent" Text="0%" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource Accent}" HorizontalAlignment="Right"/>
+            </Grid>
+        </StackPanel>
+
+        <Border Grid.Row="2" Background="{DynamicResource Bg.SurfaceAlt}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" CornerRadius="4" Padding="8,4" VerticalAlignment="Top">
+            <Grid>
+                <TextBlock x:Name="TxtEngine" Text="Engine: Detecting..." FontSize="11" Foreground="{DynamicResource Accent}"/>
+                <Button x:Name="BtnCancel" Content="Cancel" HorizontalAlignment="Right" Width="70" Height="22" Background="{DynamicResource Btn.Background}" Foreground="{DynamicResource Text.Secondary}" BorderBrush="{DynamicResource Brush.Border}" BorderThickness="1" Click="BtnCancel_Click"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

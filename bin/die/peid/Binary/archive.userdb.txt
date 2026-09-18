@@ -1,0 +1,14 @@
+; PEiD signature database - archive
+; Sanitized for XPEID (3 entries)
+
+[RAR Archive]
+signature = 52 61 72 21
+ep_only = true
+
+[ZIP Archive]
+signature = 50 4B 03 04
+ep_only = true
+
+[7-Zip Archive]
+signature = 37 7A BC AF 27 1C
+ep_only = true

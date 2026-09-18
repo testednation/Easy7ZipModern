@@ -1,0 +1,23 @@
+// Detect It Easy: detection rule file
+// Author: Yosef Khaled
+// Enhanced by: DosX
+
+// https://malwarology.substack.com/p/malicious-packer-pkr_ce1a
+// https://cyvia.io/blog/a-closer-look-at-the-pkr-ce1a-packer
+meta("packer", "pkr_ce1a");
+
+function detect() {
+    if (!PE.is64() &&
+        PE.getNumberOfSections() >= 4 &&
+        PE.compareEP("E8........E9$$$$$$$$6A..68........E8") &&
+        PE.getImportLibraryName(0) === "KERNEL32.dll" &&
+        PE.isFunctionPresent("IsDebuggerPresent") && (
+            PE.isFunctionPresent("LoadLibraryA") ||
+            PE.isFunctionPresent("LoadLibraryW")
+        ) &&
+        PE.isSignatureInSectionPresent(1, "00699AF974........96AACB4600")) {
+        bDetected = true;
+    }
+
+    return result();
+}

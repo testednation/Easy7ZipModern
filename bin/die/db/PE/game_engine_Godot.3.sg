@@ -1,0 +1,14 @@
+// Detect It Easy: detection rule file
+// Author: BJNFNE <bjnfne@web.de>
+
+// https://godotengine.org
+meta("game engine", "Godot");
+
+function detect() {
+    if (PE.getVersionStringInfo("FileDescription") == "Godot Engine") {
+        sVersion = File.cleanString(PE.getFileVersion());
+        bDetected = true;
+    }
+
+    return result();
+}

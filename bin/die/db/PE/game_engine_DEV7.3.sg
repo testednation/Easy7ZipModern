@@ -1,0 +1,17 @@
+// Detect It Easy: detection rule file
+// Author: BJNFNE <bjnfne@web.de>
+
+// https://wiki.scummvm.org/index.php?title=DEV7_Information
+meta("game engine", "DEV7");
+
+function detect() {
+    if (PE.getVersionStringInfo("InternalName") == "Dev7VM") {
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("FileDescription") == "DEV 7 code Virtual machine") {
+        bDetected = true;
+    }
+
+    if (bDetected) sVersion = File.cleanString(PE.getFileVersion());
+
+    return result();
+}

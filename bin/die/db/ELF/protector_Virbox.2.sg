@@ -1,0 +1,16 @@
+// Detect It Easy: detection rule file
+// Author: Vito <@ScalletaZ>
+
+meta("protector", "Virbox");
+
+function detect() {
+    for (var i = 0; i < ELF.getNumberOfPrograms(); i++) {
+        var nOffset = ELF.getProgramFileOffset(i);
+        if (ELF.findString(nOffset, 32, "Virbox Protector") != -1) {
+            bDetected = true;
+            break;
+        }
+    }
+
+    return result();
+}

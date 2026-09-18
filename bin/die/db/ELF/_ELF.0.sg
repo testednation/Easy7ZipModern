@@ -1,0 +1,21 @@
+// Detect It Easy: detection rule file
+// Author: horsicq <horsicq@gmail.com>
+
+meta("operation system", "Unix");
+
+function detect() {
+    if (ELF.isVerbose()) {
+        sName = ELF.getOperationSystemName();
+        sVersion = ELF.getOperationSystemVersion();
+
+        if (sVersion === "0") {
+            sVersion = String();
+        }
+
+        sOptions = ELF.getOperationSystemOptions();
+
+        bDetected = true;
+    }
+
+    return result();
+}

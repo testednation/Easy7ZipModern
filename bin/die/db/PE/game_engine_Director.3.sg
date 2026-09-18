@@ -1,0 +1,40 @@
+// Detect It Easy: detection rule file
+// Author: BJNFNE <bjnfne@web.de>
+
+// https://wiki.scummvm.org/index.php?title=Director
+meta("game engine", "Director");
+
+function detect() {
+    if (PE.isExportFunctionPresent("_FindEmbeddedMovie") || PE.isExportFunctionPresent("_GetCurrentEmbeddedMovie")) {
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("LegalCopyright") == "Copyright © 1985-1996 Macromedia, Inc.") {
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("LegalCopyright") == "Copyright © 1985-1997 Macromedia, Inc.") {
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("ProductName") == "Director 8 Shockwave Studio") {
+        sOptions = "Shockwave Studio";
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("ProductName") == "Director 8.5 Shockwave Studio") {
+        sOptions = "Shockwave Studio";
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("LegalCopyright") == "Copyright © 1985-2002 Macromedia, Inc.") {
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("LegalCopyright") == "Copyright © 1985-2003 Macromedia, Inc.") {
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("ProductName") == "Director MX 2004") {
+        sOptions = "MX 2004";
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("ProductName") == "Director 11.3") {
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("ProductName") == "Director 11.5") {
+        bDetected = true;
+    } else if (PE.getVersionStringInfo("ProductVersion") == "12.0.1 Development") {
+        sOptions = "Development build";
+        bDetected = true;
+
+    }
+
+    if (bDetected) sVersion = File.cleanString(PE.getFileVersion());
+
+    return result();
+}
