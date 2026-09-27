@@ -1,6 +1,6 @@
 using System;
 
-namespace Easy7ZipModern.Models;
+namespace StarExtract.Models;
 
 public class ArchiveItem
 {

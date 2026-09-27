@@ -1,6 +1,6 @@
 using System;
 
-namespace Easy7ZipModern.Services;
+namespace StarExtract.Services;
 
 public class ExtractionResult
 {

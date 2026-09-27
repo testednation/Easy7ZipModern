@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Easy7ZipModern.Models;
+using StarExtract.Models;
 using Microsoft.Win32;
 
-namespace Easy7ZipModern.Services;
+namespace StarExtract.Services;
 
 public class ShellAssociationService
 {
@@ -67,19 +67,19 @@ public class ShellAssociationService
     {
         try
         {
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\Easy7Zip"))
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\StarExtract"))
             {
                 if (key != null) return true;
             }
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\Easy7Zip_Open"))
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\StarExtract_Open"))
             {
                 if (key != null) return true;
             }
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\Easy7Zip_ExtractTo"))
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\StarExtract_ExtractTo"))
             {
                 if (key != null) return true;
             }
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\Easy7Zip_Add7z"))
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell\StarExtract_Add7z"))
             {
                 if (key != null) return true;
             }
@@ -111,11 +111,11 @@ public class ShellAssociationService
             {
                 if (settings.ContextMenuCascaded)
                 {
-                    string rootPath = $@"Software\Classes\{target}\shell\Easy7Zip";
+                    string rootPath = $@"Software\Classes\{target}\shell\StarExtract";
                     using (RegistryKey root = Registry.CurrentUser.CreateSubKey(rootPath))
                     {
-                        root.SetValue("", "Easy 7-Zip Modern");
-                        root.SetValue("MUIVerb", "Easy 7-Zip Modern");
+                        root.SetValue("", "Star Extract");
+                        root.SetValue("MUIVerb", "Star Extract");
                         if (!string.IsNullOrEmpty(iconVal))
                         {
                             root.SetValue("Icon", iconVal);
@@ -157,7 +157,7 @@ public class ShellAssociationService
         {
             using (RegistryKey item = shell.CreateSubKey("01_open"))
             {
-                item.SetValue("MUIVerb", "Open in Easy 7-Zip Modern");
+                item.SetValue("MUIVerb", "Open in Star Extract");
                 if (!string.IsNullOrEmpty(exeIcon)) item.SetValue("Icon", exeIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command"))
                 {
@@ -306,102 +306,102 @@ public class ShellAssociationService
     {
         if (settings.ContextMenuOpen)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_Open"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_Open"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Open");
+                item.SetValue("MUIVerb", "Star Extract: Open");
                 if (!string.IsNullOrEmpty(exeIcon)) item.SetValue("Icon", exeIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{exe}\" \"%1\""); }
             }
         }
         if (settings.ContextMenuExtractFiles)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_Extract"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_Extract"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Extract files...");
+                item.SetValue("MUIVerb", "Star Extract: Extract files...");
                 if (!string.IsNullOrEmpty(sevenZipGIcon)) item.SetValue("Icon", sevenZipGIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{sevenZipG}\" x \"%1\""); }
             }
         }
         if (settings.ContextMenuExtractHere)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_ExtractHere"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_ExtractHere"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Extract Here");
+                item.SetValue("MUIVerb", "Star Extract: Extract Here");
                 if (!string.IsNullOrEmpty(exeIcon)) item.SetValue("Icon", exeIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{exe}\" /extracthere \"%1\""); }
             }
         }
         if (settings.ContextMenuExtractTo)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_ExtractTo"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_ExtractTo"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Extract to Folder");
+                item.SetValue("MUIVerb", "Star Extract: Extract to Folder");
                 if (!string.IsNullOrEmpty(exeIcon)) item.SetValue("Icon", exeIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{exe}\" /extract \"%1\""); }
             }
         }
         if (settings.ContextMenuTest)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_Test"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_Test"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Test archive");
+                item.SetValue("MUIVerb", "Star Extract: Test archive");
                 if (!string.IsNullOrEmpty(sevenZipGIcon)) item.SetValue("Icon", sevenZipGIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{sevenZipG}\" t \"%1\""); }
             }
         }
         if (settings.ContextMenuAdd)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_Add"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_Add"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Add to archive...");
+                item.SetValue("MUIVerb", "Star Extract: Add to archive...");
                 if (!string.IsNullOrEmpty(sevenZipGIcon)) item.SetValue("Icon", sevenZipGIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{sevenZipG}\" a \"%1\""); }
             }
         }
         if (settings.ContextMenuAdd7z)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_Add7z"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_Add7z"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Add to .7z");
+                item.SetValue("MUIVerb", "Star Extract: Add to .7z");
                 if (!string.IsNullOrEmpty(sevenZipGIcon)) item.SetValue("Icon", sevenZipGIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{exe}\" /add7z \"%1\""); }
             }
         }
         if (settings.ContextMenuAddZip)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_AddZip"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_AddZip"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Add to .zip");
+                item.SetValue("MUIVerb", "Star Extract: Add to .zip");
                 if (!string.IsNullOrEmpty(sevenZipGIcon)) item.SetValue("Icon", sevenZipGIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{exe}\" /addzip \"%1\""); }
             }
         }
         if (settings.ContextMenuCrcSha)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_Sha256"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_Sha256"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Check SHA-256");
+                item.SetValue("MUIVerb", "Star Extract: Check SHA-256");
                 if (!string.IsNullOrEmpty(sevenZipGIcon)) item.SetValue("Icon", sevenZipGIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{sevenZipG}\" h -scrcSHA256 \"%1\""); }
             }
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_Crc32"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_Crc32"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Check CRC-32");
+                item.SetValue("MUIVerb", "Star Extract: Check CRC-32");
                 if (!string.IsNullOrEmpty(sevenZipGIcon)) item.SetValue("Icon", sevenZipGIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{sevenZipG}\" h -scrcCRC32 \"%1\""); }
             }
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_CrcAll"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_CrcAll"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Check All Hashes (*)");
+                item.SetValue("MUIVerb", "Star Extract: Check All Hashes (*)");
                 if (!string.IsNullOrEmpty(sevenZipGIcon)) item.SetValue("Icon", sevenZipGIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{sevenZipG}\" h -scrc* \"%1\""); }
             }
         }
         if (settings.ContextMenuScanFileType)
         {
-            using (RegistryKey item = shell.CreateSubKey("Easy7Zip_Scan"))
+            using (RegistryKey item = shell.CreateSubKey("StarExtract_Scan"))
             {
-                item.SetValue("MUIVerb", "Easy 7-Zip: Scan file type (TrID)");
+                item.SetValue("MUIVerb", "Star Extract: Scan file type (TrID)");
                 if (!string.IsNullOrEmpty(exeIcon)) item.SetValue("Icon", exeIcon);
                 using (RegistryKey cmd = item.CreateSubKey("command")) { cmd.SetValue("", $"\"{exe}\" /scan \"%1\""); }
             }
@@ -416,12 +416,12 @@ public class ShellAssociationService
             {
                 if (settings.ContextMenuCascaded)
                 {
-                    string rootPath = $@"Software\Classes\{target}\shell\Easy7Zip";
+                    string rootPath = $@"Software\Classes\{target}\shell\StarExtract";
                     using (RegistryKey root = Registry.LocalMachine.CreateSubKey(rootPath))
                     {
                         if (root == null) continue;
-                        root.SetValue("", "Easy 7-Zip Modern");
-                        root.SetValue("MUIVerb", "Easy 7-Zip Modern");
+                        root.SetValue("", "Star Extract");
+                        root.SetValue("MUIVerb", "Star Extract");
                         if (!string.IsNullOrEmpty(iconVal)) root.SetValue("Icon", iconVal);
                         root.SetValue("SubCommands", "");
 
@@ -454,8 +454,14 @@ public class ShellAssociationService
     {
         try
         {
+            // Includes the legacy "Easy7Zip*" key names so upgrading installs from
+            // the old product name are cleaned up too.
             string[] uncascadedSuffixes = new[]
             {
+                "StarExtract", "StarExtract_Open", "StarExtract_Extract", "StarExtract_ExtractHere",
+                "StarExtract_ExtractTo", "StarExtract_Test", "StarExtract_Add", "StarExtract_Add7z",
+                "StarExtract_AddZip", "StarExtract_Sha256", "StarExtract_Sha1", "StarExtract_Crc32",
+                "StarExtract_Crc64", "StarExtract_CrcAll", "StarExtract_Crc", "StarExtract_Scan",
                 "Easy7Zip", "Easy7Zip_Open", "Easy7Zip_Extract", "Easy7Zip_ExtractHere",
                 "Easy7Zip_ExtractTo", "Easy7Zip_Test", "Easy7Zip_Add", "Easy7Zip_Add7z",
                 "Easy7Zip_AddZip", "Easy7Zip_Sha256", "Easy7Zip_Sha1", "Easy7Zip_Crc32",
@@ -484,10 +490,10 @@ public class ShellAssociationService
         try
         {
             string exe = GetExePath();
-            string progId = "Easy7ZipModern.Archive";
+            string progId = "StarExtract.Archive";
             using (RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\Classes\\" + progId))
             {
-                key.SetValue("", "Archive File (Easy 7-Zip)");
+                key.SetValue("", "Archive File (Star Extract)");
                 using (RegistryKey icon = key.CreateSubKey("DefaultIcon"))
                 {
                     icon.SetValue("", exe + ",0");
@@ -505,7 +511,7 @@ public class ShellAssociationService
                     }
                     using (RegistryKey open = shell.CreateSubKey("open"))
                     {
-                        open.SetValue("", "Open in Easy 7-Zip Modern");
+                        open.SetValue("", "Open in Star Extract");
                         using (RegistryKey cmd = open.CreateSubKey("command"))
                         {
                             cmd.SetValue("", $"\"{exe}\" \"%1\"");
@@ -532,7 +538,7 @@ public class ShellAssociationService
     {
         try
         {
-            string progId = "Easy7ZipModern.Archive";
+            string progId = "StarExtract.Archive";
             using (RegistryKey shell = Registry.CurrentUser.CreateSubKey("Software\\Classes\\" + progId + "\\shell"))
             {
                 shell.SetValue("", "open");

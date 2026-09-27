@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Easy7ZipModern.Models;
+using StarExtract.Models;
 
-namespace Easy7ZipModern.Services;
+namespace StarExtract.Services;
 
 public class ExtractorEngine
 {

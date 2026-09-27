@@ -5,10 +5,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Easy7ZipModern.Models;
-using Easy7ZipModern.Services;
+using StarExtract.Models;
+using StarExtract.Services;
 
-namespace Easy7ZipModern;
+namespace StarExtract;
 
 public partial class QuickExtractWindow : Window
 {

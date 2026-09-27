@@ -16,7 +16,7 @@ param(
     [string[]]$Arch = @("x64", "x86"),
     [string]$RepoRoot = (Split-Path $PSScriptRoot -Parent),
     [string]$PayloadRoot = (Join-Path $env:TEMP "e7z-payload"),
-    [string]$Version = "1.4.0",
+    [string]$Version = "1.5.0",
     [switch]$SkipBuild
 )
 
@@ -34,7 +34,7 @@ if (-not $SkipBuild) {
         }
     }
     if (-not $dotnet) { throw "dotnet.exe not found" }
-    $proj = Join-Path $RepoRoot "src\Easy7ZipModern.csproj"
+    $proj = Join-Path $RepoRoot "src\StarExtract.csproj"
     foreach ($a in $Arch) {
         Write-Host "[build] dotnet build -c Release -p:Platform=$a"
         & $dotnet build $proj -c Release -p:Platform=$a -v minimal
@@ -106,8 +106,8 @@ foreach ($a in $Arch) {
 
     # app binary for this architecture
     $appBin = Join-Path $RepoRoot "src\bin\$a\Release\net48"
-    Copy-Item (Join-Path $appBin "Easy7ZipModern.exe") $dest -Force
-    Copy-Item (Join-Path $appBin "Easy7ZipModern.pdb") $dest -Force
+    Copy-Item (Join-Path $appBin "StarExtract.exe") $dest -Force
+    Copy-Item (Join-Path $appBin "StarExtract.pdb") $dest -Force
 
     if ($a -eq "x64") {
         # 7-Zip core + shell + codecs: committed repo binaries (byte-identical

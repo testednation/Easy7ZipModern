@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set VERSION=1.4.0
+set VERSION=1.5.0
 set "ROOT_DIR=%~dp0"
 if "%ROOT_DIR:~-1%"=="\" set "ROOT_DIR=%ROOT_DIR:~0,-1%"
 
@@ -9,7 +9,7 @@ if "%ROOT_DIR:~-1%"=="\" set "ROOT_DIR=%ROOT_DIR:~0,-1%"
 set "PATH=C:\Program Files\dotnet;C:\temp\dotnet-sdk;C:\Program Files\Inno Setup 7;C:\temp\installer\tools\innoportable\{app};%PATH%"
 
 echo ======================================================================
-echo  Easy 7-Zip Modern v%VERSION% - Automated Build ^& Installer Generator
+echo  Star Extract v%VERSION% - Automated Build ^& Installer Generator
 echo ======================================================================
 echo.
 
@@ -61,8 +61,8 @@ if "%ISCC_EXE%"=="" (
 echo [OK] Found Inno Setup Compiler: "%ISCC_EXE%"
 
 echo.
-echo [1/4] Compiling Easy 7-Zip Modern x64 (Release)...
-"%DOTNET_EXE%" build "%ROOT_DIR%\src\Easy7ZipModern.csproj" -c Release -p:Platform=x64
+echo [1/4] Compiling Star Extract x64 (Release)...
+"%DOTNET_EXE%" build "%ROOT_DIR%\src\StarExtract.csproj" -c Release -p:Platform=x64
 if %errorlevel% neq 0 (
     echo.
     echo [ERROR] dotnet build x64 failed with exit code %errorlevel%!
@@ -71,8 +71,8 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [2/4] Compiling Easy 7-Zip Modern x86 (Release)...
-"%DOTNET_EXE%" build "%ROOT_DIR%\src\Easy7ZipModern.csproj" -c Release -p:Platform=x86
+echo [2/4] Compiling Star Extract x86 (Release)...
+"%DOTNET_EXE%" build "%ROOT_DIR%\src\StarExtract.csproj" -c Release -p:Platform=x86
 if %errorlevel% neq 0 (
     echo.
     echo [ERROR] dotnet build x86 failed with exit code %errorlevel%!
@@ -86,18 +86,18 @@ if not exist "C:\temp\installer\payload-x64" mkdir "C:\temp\installer\payload-x6
 if not exist "C:\temp\installer\payload-x86" mkdir "C:\temp\installer\payload-x86"
 if not exist "C:\temp\installer\output" mkdir "C:\temp\installer\output"
 
-copy /y "%ROOT_DIR%\src\bin\x64\Release\net48\Easy7ZipModern.exe" "C:\temp\installer\payload-x64\Easy7ZipModern.exe" >nul
-copy /y "%ROOT_DIR%\src\bin\x64\Release\net48\Easy7ZipModern.pdb" "C:\temp\installer\payload-x64\Easy7ZipModern.pdb" >nul
-copy /y "%ROOT_DIR%\src\bin\x64\Release\net48\Easy7ZipModern.exe" "%ROOT_DIR%\Easy7ZipModern.exe" >nul
+copy /y "%ROOT_DIR%\src\bin\x64\Release\net48\StarExtract.exe" "C:\temp\installer\payload-x64\StarExtract.exe" >nul
+copy /y "%ROOT_DIR%\src\bin\x64\Release\net48\StarExtract.pdb" "C:\temp\installer\payload-x64\StarExtract.pdb" >nul
+copy /y "%ROOT_DIR%\src\bin\x64\Release\net48\StarExtract.exe" "%ROOT_DIR%\StarExtract.exe" >nul
 
-copy /y "%ROOT_DIR%\src\bin\x86\Release\net48\Easy7ZipModern.exe" "C:\temp\installer\payload-x86\Easy7ZipModern.exe" >nul
-copy /y "%ROOT_DIR%\src\bin\x86\Release\net48\Easy7ZipModern.pdb" "C:\temp\installer\payload-x86\Easy7ZipModern.pdb" >nul
+copy /y "%ROOT_DIR%\src\bin\x86\Release\net48\StarExtract.exe" "C:\temp\installer\payload-x86\StarExtract.exe" >nul
+copy /y "%ROOT_DIR%\src\bin\x86\Release\net48\StarExtract.pdb" "C:\temp\installer\payload-x86\StarExtract.pdb" >nul
 echo Payloads staged successfully.
 
 echo.
 echo [4/4] Building Inno Setup Installers...
 echo --- Compiling x64 installer ---
-"%ISCC_EXE%" "%ROOT_DIR%\installer\Easy7ZipModern-installer.iss" /DArch=x64
+"%ISCC_EXE%" "%ROOT_DIR%\installer\StarExtract-installer.iss" /DArch=x64
 if %errorlevel% neq 0 (
     echo.
     echo [ERROR] Inno Setup x64 installer compilation failed!
@@ -107,7 +107,7 @@ if %errorlevel% neq 0 (
 
 echo.
 echo --- Compiling x86 installer ---
-"%ISCC_EXE%" "%ROOT_DIR%\installer\Easy7ZipModern-installer.iss" /DArch=x86
+"%ISCC_EXE%" "%ROOT_DIR%\installer\StarExtract-installer.iss" /DArch=x86
 if %errorlevel% neq 0 (
     echo.
     echo [ERROR] Inno Setup x86 installer compilation failed!
@@ -118,21 +118,21 @@ if %errorlevel% neq 0 (
 echo.
 echo Syncing output installers to repository...
 if not exist "%ROOT_DIR%\installer" mkdir "%ROOT_DIR%\installer"
-copy /y "C:\temp\installer\output\Easy7ZipModern-%VERSION%-setup-x64.exe" "%ROOT_DIR%\installer\Easy7ZipModern-%VERSION%-setup-x64.exe" >nul
-copy /y "C:\temp\installer\output\Easy7ZipModern-%VERSION%-setup-x86.exe" "%ROOT_DIR%\installer\Easy7ZipModern-%VERSION%-setup-x86.exe" >nul
+copy /y "C:\temp\installer\output\StarExtract-%VERSION%-setup-x64.exe" "%ROOT_DIR%\installer\StarExtract-%VERSION%-setup-x64.exe" >nul
+copy /y "C:\temp\installer\output\StarExtract-%VERSION%-setup-x86.exe" "%ROOT_DIR%\installer\StarExtract-%VERSION%-setup-x86.exe" >nul
 
 echo.
 echo ======================================================================
-echo  [SUCCESS] Easy 7-Zip Modern v%VERSION% Installers Generated!
+echo  [SUCCESS] Star Extract v%VERSION% Installers Generated!
 echo ======================================================================
 echo.
 echo  x64 Installer:
-echo    - %ROOT_DIR%\installer\Easy7ZipModern-%VERSION%-setup-x64.exe
-echo    - C:\temp\installer\output\Easy7ZipModern-%VERSION%-setup-x64.exe
+echo    - %ROOT_DIR%\installer\StarExtract-%VERSION%-setup-x64.exe
+echo    - C:\temp\installer\output\StarExtract-%VERSION%-setup-x64.exe
 echo.
 echo  x86 Installer:
-echo    - %ROOT_DIR%\installer\Easy7ZipModern-%VERSION%-setup-x86.exe
-echo    - C:\temp\installer\output\Easy7ZipModern-%VERSION%-setup-x86.exe
+echo    - %ROOT_DIR%\installer\StarExtract-%VERSION%-setup-x86.exe
+echo    - C:\temp\installer\output\StarExtract-%VERSION%-setup-x86.exe
 echo ======================================================================
 echo.
 pause

@@ -7,9 +7,9 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
-using Easy7ZipModern.Models;
+using StarExtract.Models;
 
-namespace Easy7ZipModern.Services;
+namespace StarExtract.Services;
 
 public class UpdateService
 {
@@ -18,25 +18,11 @@ public class UpdateService
     /// <summary>Source repo for all UniExtract plugin bundles (user-requested fork).</summary>
     public const string UniExtractReleaseUrl = "https://github.com/gvp9000/UniExtract2/releases/download/v3.0.4/UniExtract2.zip";
 
-    private static string ComponentsFilePath
-    {
-        get
-        {
-            string dir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "Easy7ZipModern");
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            return Path.Combine(dir, "components.json");
-        }
-    }
+    private static string ComponentsFilePath => AppPaths.ComponentsFile;
 
     public UpdateService()
     {
         _baseDir = AppDomain.CurrentDomain.BaseDirectory;
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
     }
 
     public ObservableCollection<ComponentItem> GetDefaultComponents()
@@ -255,54 +241,57 @@ public class UpdateService
             CanUpdate = !File.Exists(Path.Combine(_baseDir, "bin", "exeinfope.exe"))
         });
 
+        list.Add(new ComponentItem
+        {
+            Id = "magika",
+            Name = "Magika File-Type Detector (Google AI)",
+            Category = "Identifiers",
+            Description = "AI-powered content-type detector. Adds a second opinion to the File-Type Scanner (bin\\magika\\magika.exe).",
+            DownloadUrl = FileScanService.MagikaUrl,
+            DestinationFolder = _baseDir,
+            VerificationFile = Path.Combine(_baseDir, "bin", "magika", "magika.exe"),
+            SupportedFormats = "AI content-type detection (100+ types)",
+            InstalledVersion = File.Exists(Path.Combine(_baseDir, "bin", "magika", "magika.exe")) ? FileScanService.MagikaVersion : "Missing",
+            LatestVersion = FileScanService.MagikaVersion,
+            Status = File.Exists(Path.Combine(_baseDir, "bin", "magika", "magika.exe")) ? "Installed" : "Missing",
+            CanUpdate = !File.Exists(Path.Combine(_baseDir, "bin", "magika", "magika.exe"))
+        });
+
         return list;
     }
 
+    /// <summary>
+    /// Downloads + installs one component through the shared HttpDownloader.
+    /// Progress is written straight to the item's bindable properties.
+    /// </summary>
     public async Task DownloadComponentAsync(ComponentItem item, CancellationToken ct = default(CancellationToken))
     {
         if (item == null || string.IsNullOrWhiteSpace(item.DownloadUrl))
         {
             return;
-        }
-
-        item.IsDownloading = true;
+        }        item.IsDownloading = true;
         item.Status = "Downloading...";
         item.DownloadProgress = 0.0;
         item.DownloadSpeed = "Connecting...";
 
-        string ext = Path.GetExtension(new Uri(item.DownloadUrl).AbsolutePath);
-        if (string.IsNullOrEmpty(ext))
-        {
-            ext = ".zip";
-        }
-        string tempFile = Path.Combine(Path.GetTempPath(), item.Id + "_" + Guid.NewGuid().ToString("N").Substring(0, 8) + ext);
-        var sw = Stopwatch.StartNew();
-        long lastBytes = 0;
-        DateTime lastSpeedCheck = DateTime.UtcNow;
-
+        string tempFile = null;
         try
         {
-            using (var client = new WebClient())
+            // Download-only step — the per-component install logic decides where
+            // the archive's payload goes (7z core, codecs, plugin bundle, custom).
+            var step = new DownloadStep
             {
-                client.DownloadProgressChanged += (s, e) =>
-                {
-                    item.DownloadProgress = e.ProgressPercentage;
-                    double rec = e.BytesReceived / 1048576.0;
-                    double tot = e.TotalBytesToReceive / 1048576.0;
-                    item.ProgressText = string.Format("{0:F1} MB / {1:F1} MB ({2}%)", rec, tot, e.ProgressPercentage);
-                    DateTime now = DateTime.UtcNow;
-                    double secs = (now - lastSpeedCheck).TotalSeconds;
-                    if (secs >= 0.5)
-                    {
-                        double kbps = (e.BytesReceived - lastBytes) / 1024.0 / secs;
-                        item.DownloadSpeed = kbps > 1024.0 ? string.Format("{0:F2} MB/s", kbps / 1024.0) : string.Format("{0:F0} KB/s", kbps);
-                        lastBytes = e.BytesReceived;
-                        lastSpeedCheck = now;
-                    }
-                };
-                ct.Register(() => client.CancelAsync());
-                await client.DownloadFileTaskAsync(item.DownloadUrl, tempFile);
-            }
+                Name = item.Name,
+                Url = item.DownloadUrl
+            };
+            var batch = new DownloadBatch();
+            batch.Steps.Add(step);
+            await new HttpDownloader().DownloadAsync(batch, (pct, msg) =>
+            {
+                item.DownloadProgress = pct;
+                item.ProgressText = msg;
+            }, ct);
+            tempFile = step.ResultTempFile;
 
             item.Status = "Extracting & Installing...";
             item.DownloadProgress = 100.0;
@@ -334,7 +323,7 @@ public class UpdateService
             item.IsDownloading = false;
             try
             {
-                if (File.Exists(tempFile))
+                if (tempFile != null && File.Exists(tempFile))
                 {
                     File.Delete(tempFile);
                 }
@@ -386,6 +375,19 @@ public class UpdateService
         {
             // Codec DLLs belong directly in the Codecs folder.
             RunSevenZip(sevenZip, $"x -y -o\"{item.DestinationFolder}\" \"{tempFile}\"");
+            return;
+        }
+
+        if (item.Id == "magika")
+        {
+            // The Magika CLI zip nests its payload in a versioned subfolder —
+            // place magika.exe (and its payload files) directly in bin\magika\.
+            RunSevenZip(sevenZip, $"x -y -o\"{item.DestinationFolder}\" \"{tempFile}\"");
+            string magikaRoot = Path.Combine(item.DestinationFolder, "magika");
+            if (!File.Exists(Path.Combine(item.DestinationFolder, "magika.exe")) && Directory.Exists(magikaRoot))
+            {
+                CopyDirectory(magikaRoot, item.DestinationFolder);
+            }
             return;
         }
 

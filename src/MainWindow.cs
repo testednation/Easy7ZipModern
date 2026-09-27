@@ -8,15 +8,15 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Easy7ZipModern.Models;
-using Easy7ZipModern.Services;
+using StarExtract.Models;
+using StarExtract.Services;
 using Microsoft.Win32;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 using Button = System.Windows.Controls.Button;
 using WinForms = System.Windows.Forms;
 
-namespace Easy7ZipModern;
+namespace StarExtract;
 
 public partial class MainWindow : Window
 {
@@ -361,7 +361,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            System.Windows.MessageBox.Show("Error opening archive: " + ex.Message, "Easy 7-Zip Modern",
+            System.Windows.MessageBox.Show("Error opening archive: " + ex.Message, "Star Extract",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
@@ -843,7 +843,7 @@ public partial class MainWindow : Window
         if (string.IsNullOrEmpty(_currentLoadedArchive))
         {
             System.Windows.MessageBox.Show("Open an archive first — click 'Open' or drag & drop one anywhere in this window.",
-                "Easy 7-Zip Modern", MessageBoxButton.OK, MessageBoxImage.Information);
+                "Star Extract", MessageBoxButton.OK, MessageBoxImage.Information);
             return false;
         }
         return true;

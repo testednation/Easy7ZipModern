@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Easy7ZipModern.Models;
+namespace StarExtract.Models;
 
 public class ComponentItem : INotifyPropertyChanged
 {

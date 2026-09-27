@@ -1,7 +1,7 @@
-<Window x:Class="Easy7ZipModern.ScanWindow"
+<Window x:Class="StarExtract.ScanWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Scan File Type" Height="400" Width="600"
+        Title="Scan File Type" Height="480" Width="640"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource Bg.Window}">
     <Window.Resources>
@@ -38,23 +38,48 @@
             </Setter>
         </Style>
     </Window.Resources>
-    
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <TextBlock x:Name="TxtTitle" Text="File Signature Analysis:" FontWeight="Bold" Foreground="{DynamicResource Text.Primary}" Margin="0,0,0,10" Grid.Row="0"/>
-        
-        <TextBox x:Name="TxtResults" Grid.Row="1" IsReadOnly="True" TextWrapping="Wrap" 
-                 VerticalScrollBarVisibility="Auto" 
-                 Background="{DynamicResource Bg.Card}" 
-                 Foreground="{DynamicResource Text.Primary}" 
-                 BorderBrush="{DynamicResource Brush.Border}" 
+
+        <!-- Downloader / progress strip: hidden unless a scanner is missing -->
+        <StackPanel x:Name="PnlDownload" Grid.Row="1" Visibility="Collapsed" Margin="0,0,0,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="TxtScanStatus" Text="" FontSize="12" Foreground="{DynamicResource Text.Secondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,8,0"/>
+                <Button x:Name="BtnScanDownload" Grid.Column="1" Content="⬇️ Download &amp; Install" Style="{StaticResource ModernBtn}" Height="28" Padding="10,4" Click="BtnScanDownload_Click" Visibility="Collapsed"/>
+                <Button x:Name="BtnScanCancel" Grid.Column="2" Content="✖ Cancel" Style="{StaticResource ModernBtn}" Height="28" Padding="10,4" Margin="6,0,0,0" Click="BtnScanCancel_Click" Visibility="Collapsed"/>
+            </Grid>
+            <ProgressBar x:Name="PbScanDownload" Height="6" Minimum="0" Maximum="100" Value="0" Margin="0,6,0,0"
+                         Background="{DynamicResource Bg.SurfaceAlt}" Foreground="{DynamicResource Accent}"/>
+        </StackPanel>
+
+        <!-- Scanner options -->
+        <StackPanel x:Name="PnlOptions" Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
+            <CheckBox x:Name="ChkUseMagika" Content="Use Magika (Google AI detector) as a second opinion"
+                      Foreground="{DynamicResource Text.Secondary}" FontSize="12" VerticalAlignment="Center"
+                      Checked="ChkUseMagika_Changed" Unchecked="ChkUseMagika_Changed"/>
+        </StackPanel>
+
+        <TextBox x:Name="TxtResults" Grid.Row="3" IsReadOnly="True" TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto"
+                 Background="{DynamicResource Bg.Card}"
+                 Foreground="{DynamicResource Text.Primary}"
+                 BorderBrush="{DynamicResource Brush.Border}"
                  FontFamily="Consolas" Padding="5" />
-                 
-        <Button Content="Close" Grid.Row="2" HorizontalAlignment="Right" Margin="0,10,0,0" Width="100" Height="30" Click="BtnClose_Click" Style="{StaticResource ModernBtn}" />
+
+        <Button Content="Close" Grid.Row="4" HorizontalAlignment="Right" Margin="0,10,0,0" Width="100" Height="30" Click="BtnClose_Click" Style="{StaticResource ModernBtn}" />
     </Grid>
 </Window>

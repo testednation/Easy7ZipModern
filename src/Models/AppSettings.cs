@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using System.Web.Script.Serialization;
+using StarExtract.Services;
 
-namespace Easy7ZipModern.Models;
+namespace StarExtract.Models;
 
 public class AppSettings
 {
@@ -41,20 +42,11 @@ public class AppSettings
 	public bool ContextMenuCrcSha { get; set; }
 	public bool ContextMenuScanFileType { get; set; }
 
+	/// <summary>Include the Google Magika AI detector as a second opinion when scanning file types.</summary>
+	public bool ScanUseMagika { get; set; }
 
-	private static string SettingsFilePath
-	{
-		get
-		{
-			string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-			string text = Path.Combine(folderPath, "Easy7ZipModern");
-			if (!Directory.Exists(text))
-			{
-				Directory.CreateDirectory(text);
-			}
-			return Path.Combine(text, "settings.json");
-		}
-	}
+
+	private static string SettingsFilePath => AppPaths.SettingsFile;
 
 	public AppSettings()
 	{
@@ -81,6 +73,7 @@ public class AppSettings
 		ContextMenuAddZip = true;
 		ContextMenuCrcSha = true;
 		ContextMenuScanFileType = true;
+		ScanUseMagika = true;
 	}
 
 	public static AppSettings Load()

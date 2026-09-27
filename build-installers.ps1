@@ -1,14 +1,14 @@
-# Easy 7-Zip Modern: Build and Generate Installers
+# Star Extract: Build and Generate Installers
 $ErrorActionPreference = "Stop"
 
-$version = "1.4.0"
+$version = "1.5.0"
 $rootDir = $PSScriptRoot
 if (-not $rootDir) { $rootDir = "C:\Users\Administrator\Documents\Easy7zipm" }
 
 $env:PATH = "C:\Program Files\dotnet;C:\temp\dotnet-sdk;C:\Program Files\Inno Setup 7;C:\temp\installer\tools\innoportable\{app};" + $env:PATH
 
 Write-Host "======================================================================" -ForegroundColor Cyan
-Write-Host " Easy 7-Zip Modern v$version - Automated Build & Installer Generator" -ForegroundColor Cyan
+Write-Host " Star Extract v$version - Automated Build & Installer Generator" -ForegroundColor Cyan
 Write-Host "======================================================================" -ForegroundColor Cyan
 
 # 1. Locate dotnet
@@ -50,7 +50,7 @@ Write-Host "[OK] Using Inno Setup: $isccExe" -ForegroundColor Gray
 
 # 3. Build Binaries
 Write-Host "`n[1/4] Building Release x64 and x86 binaries..." -ForegroundColor Yellow
-$proj = "$rootDir\src\Easy7ZipModern.csproj"
+$proj = "$rootDir\src\StarExtract.csproj"
 
 Write-Host "Building x64 (Release)..." -ForegroundColor Gray
 & $dotnetExe build $proj -c Release -p:Platform=x64
@@ -70,16 +70,16 @@ $outDir = "C:\temp\installer\output"
     if (-not (Test-Path $_)) { New-Item -ItemType Directory -Path $_ -Force | Out-Null }
 }
 
-Copy-Item "$rootDir\src\bin\x64\Release\net48\Easy7ZipModern.exe" "$p64\Easy7ZipModern.exe" -Force
-Copy-Item "$rootDir\src\bin\x64\Release\net48\Easy7ZipModern.pdb" "$p64\Easy7ZipModern.pdb" -Force
-Copy-Item "$rootDir\src\bin\x64\Release\net48\Easy7ZipModern.exe" "$rootDir\Easy7ZipModern.exe" -Force
+Copy-Item "$rootDir\src\bin\x64\Release\net48\StarExtract.exe" "$p64\StarExtract.exe" -Force
+Copy-Item "$rootDir\src\bin\x64\Release\net48\StarExtract.pdb" "$p64\StarExtract.pdb" -Force
+Copy-Item "$rootDir\src\bin\x64\Release\net48\StarExtract.exe" "$rootDir\StarExtract.exe" -Force
 
-Copy-Item "$rootDir\src\bin\x86\Release\net48\Easy7ZipModern.exe" "$p86\Easy7ZipModern.exe" -Force
-Copy-Item "$rootDir\src\bin\x86\Release\net48\Easy7ZipModern.pdb" "$p86\Easy7ZipModern.pdb" -Force
+Copy-Item "$rootDir\src\bin\x86\Release\net48\StarExtract.exe" "$p86\StarExtract.exe" -Force
+Copy-Item "$rootDir\src\bin\x86\Release\net48\StarExtract.pdb" "$p86\StarExtract.pdb" -Force
 
 # 5. Compile Installers
 Write-Host "`n[3/4] Compiling Installers with Inno Setup..." -ForegroundColor Yellow
-$issPath = "$rootDir\installer\Easy7ZipModern-installer.iss"
+$issPath = "$rootDir\installer\StarExtract-installer.iss"
 
 Write-Host "Compiling x64 installer..." -ForegroundColor Gray
 & $isccExe $issPath /DArch=x64
@@ -96,12 +96,12 @@ if (-not (Test-Path $repoInstallerDir)) {
     New-Item -ItemType Directory -Path $repoInstallerDir -Force | Out-Null
 }
 
-Copy-Item "$outDir\Easy7ZipModern-$version-setup-x64.exe" "$repoInstallerDir\Easy7ZipModern-$version-setup-x64.exe" -Force
-Copy-Item "$outDir\Easy7ZipModern-$version-setup-x86.exe" "$repoInstallerDir\Easy7ZipModern-$version-setup-x86.exe" -Force
+Copy-Item "$outDir\StarExtract-$version-setup-x64.exe" "$repoInstallerDir\StarExtract-$version-setup-x64.exe" -Force
+Copy-Item "$outDir\StarExtract-$version-setup-x86.exe" "$repoInstallerDir\StarExtract-$version-setup-x86.exe" -Force
 
 Write-Host "`n======================================================================" -ForegroundColor Green
-Write-Host " [SUCCESS] Easy 7-Zip Modern v$version Installers Generated!" -ForegroundColor Green
+Write-Host " [SUCCESS] Star Extract v$version Installers Generated!" -ForegroundColor Green
 Write-Host "======================================================================" -ForegroundColor Green
-Write-Host "  x64 Installer: $repoInstallerDir\Easy7ZipModern-$version-setup-x64.exe" -ForegroundColor White
-Write-Host "  x86 Installer: $repoInstallerDir\Easy7ZipModern-$version-setup-x86.exe" -ForegroundColor White
+Write-Host "  x64 Installer: $repoInstallerDir\StarExtract-$version-setup-x64.exe" -ForegroundColor White
+Write-Host "  x86 Installer: $repoInstallerDir\StarExtract-$version-setup-x86.exe" -ForegroundColor White
 Write-Host "======================================================================" -ForegroundColor Green

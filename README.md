@@ -1,4 +1,4 @@
-# 🗂 Easy 7-Zip Modern — Universal Extractor Edition
+# ⭐ Star Extract — Universal Extractor Edition
 
 A modern WPF front-end for 7-Zip and the UniExtract2 tool suite. Browse archive
 contents with a real file-manager interface, extract with the right engine
@@ -6,7 +6,7 @@ picked automatically, identify any file's true format from its binary
 signature, keep codec and unpacker plugins up to date from editable URLs, and
 never get stuck on a password again.
 
-![version](https://img.shields.io/badge/version-1.4.0-blue)
+![version](https://img.shields.io/badge/version-1.5.0-blue)
 ![platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![framework](https://img.shields.io/badge/.NET%20Framework-4.8-purple)
 ![arch](https://img.shields.io/badge/arch-x64%20%7C%20x86-success)
@@ -52,17 +52,22 @@ Picks the right engine for the job automatically:
 
 ### 🔎 File-Type Scanner
 Know what you're looking at before you extract. Right-click any file in
-Explorer and pick **Scan file type (TrID)**, or run `Easy7ZipModern.exe <file>
+Explorer and pick **Scan file type (TrID)**, or run `StarExtract.exe <file>
 /scan`:
 
-- **TrID signature analysis** — matches the file against 18,000+ binary
-  definitions (bundled with the plugin suite) to reveal the real format, even
-  with a missing, wrong, or extension-less name — with a confidence percentage
-  for each candidate
-- **Magika analysis** (optional) — if Google's Magika is on `PATH` or in
-  `bin\`, its AI-based detection runs as a second opinion
+- **TrID signature analysis** — matches the file against 22,000+ binary
+  definitions to reveal the real format, even with a missing, wrong, or
+  extension-less name — with a confidence percentage for each candidate
+- **Magika analysis** (optional) — Google's AI-powered detector runs as a second
+  opinion when it's on `PATH` or in `bin\magika\`; control it with the
+  **Use Magika** checkbox in the scan window (choice persists in settings)
+- **Inline scanner downloader** — if TrID or Magika is missing, the scan window
+  offers a one-click **⬇️ Download & Install** with a live progress bar,
+  speed readout, and Cancel button; TrID + its definition pack come from
+  mark0.net, Magika from Google's official GitHub releases
 - Themed results window; the **Format & Signature Detectors** entry in the
-  Components tab installs/updates TrID and ExeInfo
+  Components tab installs/updates TrID and ExeInfo, and a dedicated
+  **Magika File-Type Detector (Google AI)** entry covers the AI detector
 
 ### 📌 Explorer Context Menu
 Integrate into Windows Explorer right-click menus on every file and folder:
@@ -72,7 +77,7 @@ Integrate into Windows Explorer right-click menus on every file and folder:
 - One-click compression: **Add to <name>.7z** and **Add to <name>.zip**
 - **CRC SHA** submenu — CRC-32 / CRC-64 / SHA-1 / SHA-256 / all hashes
 - **Scan file type (TrID)** — signature analysis from the menu
-- Flat menu or cascaded under **Easy 7-Zip Modern ▸**; optional icons; per-item
+- Flat menu or cascaded under **Star Extract ▸**; optional icons; per-item
   toggles in Settings
 
 ### ⚙ Components & Plugins
@@ -85,7 +90,7 @@ Integrate into Windows Explorer right-click menus on every file and folder:
   [`https://github.com/gvp9000/UniExtract2/releases`](https://github.com/gvp9000/UniExtract2/releases)
   (v3.0.4 bundle: innounp, unshield, lessmsi, GARbro, pea, unrpa, exeinfope,
   Wise & Enigma unpackers, and 100+ more tools)
-- URL edits and custom plugins persist in `%AppData%\Easy7ZipModern\components.json`
+- URL edits and custom plugins persist in `%AppData%\StarExtract\components.json`
 
 ### 🔐 Password Vault
 - Remembers archive passwords encrypted with **DPAPI** (current-user scope)
@@ -141,10 +146,27 @@ Explorer associations, password vault, and behavior toggles:
 
 
 ### 🔎 File-Type Scanner
-TrID signature analysis launched from the context menu or `Easy7ZipModern.exe
+TrID signature analysis launched from the context menu or `StarExtract.exe
 <file> /scan` — here scanning an executable:
 
 ![File-Type Scanner](docs/screenshots/05-file-scanner.png)
+
+---
+
+## ⬇️ Scanner auto-download
+The File-Type Scanner is self-bootstrapping. Open `/scan` on a machine without
+the detectors and the window itself offers to fetch them:
+
+| Scanner | Source | Installed to | Size |
+|---|---|---|---|
+| TrID executable | `mark0.net/download/trid_w32.zip` | `bin\trid.exe` | ~50 KB |
+| TrID definitions | `mark0.net/download/triddefs.zip` | `bin\triddefs.trd` | ~2.8 MB |
+| Magika CLI (Google AI) | `github.com/google/magika` releases | `bin\magika\magika.exe` | ~10 MB |
+
+Downloads run inside the scan window with a progress bar, MB counter, and live
+speed; **Cancel** aborts mid-transfer. Unpacked with the bundled 7-Zip core, so
+no extra dependencies are needed. The same Magika package is available in the
+**Components** tab as "Magika File-Type Detector (Google AI)".
 
 ---
 
@@ -159,7 +181,7 @@ cd src && dotnet build -c Release -p:Platform=x64 && cd ..
 powershell -NoProfile -ExecutionPolicy Bypass -File tools\generate-screenshots.ps1
 ```
 
-The script temporarily pins `%AppData%\Easy7ZipModern\settings.json` (dark
+The script temporarily pins `%AppData%\StarExtract\settings.json` (dark
 theme, browser-on-open, no auto-open of Explorer) and restores your original
 settings afterwards. Keep it pure ASCII — Windows PowerShell 5.1 misparses
 non-ASCII scripts saved without a BOM.
@@ -185,7 +207,7 @@ cheat sheet.
 ## 🚀 Getting Started
 
 ### Option 1 — Installer (recommended)
-1. Download `Easy7ZipModern-1.4.0-setup-x64.exe` (or `-x86` for 32-bit Windows)
+1. Download `StarExtract-1.5.0-setup-x64.exe` (or `-x86` for 32-bit Windows)
    and run it
 2. Pick **for all users** or **just for me** on the first setup page
 3. Launch, open the **Components** tab, and click **Download / Update All** to
@@ -194,29 +216,30 @@ cheat sheet.
 4. *(Optional)* In **Settings**, register Explorer double-click associations
 
 ### Option 2 — Portable
-Copy the app folder (needs `Easy7ZipModern.exe` beside `7z.exe` / `7z.dll` and
+Copy the app folder (needs `StarExtract.exe` beside `7z.exe` / `7z.dll` and
 the `bin\` plugin folder) anywhere you like and run the exe. Nothing is written
-outside `%AppData%\Easy7ZipModern` for settings.
+outside `%AppData%\StarExtract` for settings.
 
 ### Command line
 ```
-Easy7ZipModern.exe <archive>             open in browser
-Easy7ZipModern.exe <archive> /extract    quick-extract immediately
-Easy7ZipModern.exe <file> /scan          file-type scan (TrID)
-Easy7ZipModern.exe <target> /add7z       compress to <target>.7z
-Easy7ZipModern.exe <target> /addzip      compress to <target>.zip
-Easy7ZipModern.exe /register             register Explorer context menu
-Easy7ZipModern.exe /unregister           remove Explorer context menu
-Easy7ZipModern.exe /registercascaded     context menu as sub-menu
-Easy7ZipModern.exe /registermain         context menu flat in main menu
+StarExtract.exe <archive>             open in browser
+StarExtract.exe <archive> /extract    quick-extract immediately
+StarExtract.exe <file> /scan          file-type scan (TrID)
+StarExtract.exe <target> /add7z       compress to <target>.7z
+StarExtract.exe <target> /addzip      compress to <target>.zip
+StarExtract.exe /register             register Explorer context menu
+StarExtract.exe /unregister           remove Explorer context menu
+StarExtract.exe /registercascaded     context menu as sub-menu
+StarExtract.exe /registermain         context menu flat in main menu
 ```
 
 ### Data & settings locations
 | File | Purpose |
 |---|---|
-| `%AppData%\Easy7ZipModern\settings.json` | Theme, zoom, and behavior toggles |
-| `%AppData%\Easy7ZipModern\components.json` | Edited plugin URLs + custom plugins |
-| `%AppData%\Easy7ZipModern\vault.dat` | DPAPI-encrypted password vault |
+| `%AppData%\StarExtract\settings.json` | Theme, zoom, and behavior toggles |
+| `%AppData%\StarExtract\components.json` | Edited plugin URLs + custom plugins |
+| `%AppData%\StarExtract\vault.dat` | DPAPI-encrypted password vault |
+| *(1.4.x or older)* `%AppData%\Easy7ZipModern\` | Legacy data folder — migrated automatically on first 1.5+ launch |
 | `<app>\bin\` | Plugin tools (innounp, lessmsi, GARbro, …) |
 | `<app>\Codecs\` | Zstandard / Brotli / LZ4 / Lizard codec DLLs |
 
@@ -229,8 +252,8 @@ UniExtract plugin suite so everything works offline):
 
 | Installer | For |
 |---|---|
-| `Easy7ZipModern-1.4.0-setup-x64.exe` | 64-bit Windows (recommended) |
-| `Easy7ZipModern-1.4.0-setup-x86.exe` | 32-bit Windows (runs on x64 too) |
+| `StarExtract-1.5.0-setup-x64.exe` | 64-bit Windows (recommended) |
+| `StarExtract-1.5.0-setup-x86.exe` | 32-bit Windows (runs on x64 too) |
 
 Each carries an **architecture-matched 7-Zip core and codecs** (x64 build →
 64-bit 7z + x64 codecs; x86 build → 32-bit equivalents — verified per binary).
@@ -242,8 +265,8 @@ Choose on the first setup page, or force from the command line:
 
 | Mode | Command | Location | Uninstall entry |
 |---|---|---|---|
-| All users (default) | `/ALLUSERS` | `C:\Program Files\Easy 7-Zip Modern` | HKLM |
-| Current user only | `/CURRENTUSER` | `%LOCALAPPDATA%\Programs\Easy 7-Zip Modern` | HKCU |
+| All users (default) | `/ALLUSERS` | `C:\Program Files\Star Extract` | HKLM |
+| Current user only | `/CURRENTUSER` | `%LOCALAPPDATA%\Programs\Star Extract` | HKCU |
 
 ### Upgrades
 The AppId GUID is the stable upgrade code. Installing a newer build over an
@@ -269,7 +292,7 @@ pack needed) and Windows.
 cd src
 dotnet build -c Release -p:Platform=x64   # or -p:Platform=x86
 ```
-Output: `src/bin/<arch>/Release/net48/Easy7ZipModern.exe` — run it from a
+Output: `src/bin/<arch>/Release/net48/StarExtract.exe` — run it from a
 folder containing the 7-Zip core (`7z.exe`, `7z.dll`), `Codecs\`, and `bin\`.
 
 ### Installers
@@ -282,10 +305,10 @@ folder containing the 7-Zip core (`7z.exe`, `7z.dll`), `Codecs\`, and `bin\`.
 2. Compile with [Inno Setup](https://jrsoftware.org/isinfo.php), overriding the
    defaults as needed:
    ```bash
-   ISCC.exe installer/Easy7ZipModern-installer.iss /DArch=x64 \
-     /DRepoRoot=. /DPayloadRoot="%TEMP%\e7z-payload" /DAppVersion=1.4.0
-   ISCC.exe installer/Easy7ZipModern-installer.iss /DArch=x86 \
-     /DRepoRoot=. /DPayloadRoot="%TEMP%\e7z-payload" /DAppVersion=1.4.0
+   ISCC.exe installer/StarExtract-installer.iss /DArch=x64 \
+     /DRepoRoot=. /DPayloadRoot="%TEMP%\e7z-payload" /DAppVersion=1.5.0
+   ISCC.exe installer/StarExtract-installer.iss /DArch=x86 \
+     /DRepoRoot=. /DPayloadRoot="%TEMP%\e7z-payload" /DAppVersion=1.5.0
    ```
 Setup binaries land in `<PayloadRoot>\output`. The `.iss` handles mode
 selection, upgrade detection, version metadata, and .NET checks.
@@ -303,9 +326,9 @@ Release with generated release notes. It can also be run manually via
 ## 📁 Project Layout
 
 ```
-Easy7zipm/
+StarExtract/
 ├── installer/
-│   └── Easy7ZipModern-installer.iss  # parameterized Inno Setup script (x64/x86)
+│   └── StarExtract-installer.iss  # parameterized Inno Setup script (x64/x86)
 ├── src/
 │   ├── App.xaml / App.cs             # startup, theme bootstrap, CLI args
 │   ├── MainWindow.xaml / .cs         # 4-page shell: browser, extractor, components, settings
@@ -340,11 +363,30 @@ Easy7zipm/
 - **ZIP archives created by some tools show odd entries** — supported: the
   browser deduplicates explicit folder entries and filters 7-Zip's self-listing
 - **Settings look corrupted** — delete the file in question under
-  `%AppData%\Easy7ZipModern\`; it is recreated with defaults on next launch
+  `%AppData%\StarExtract\`; it is recreated with defaults on next launch
 
 ---
 
 ## 📝 Changelog
+
+### 1.5.0
+- **Project renamed to Star Extract** — same engine, new name. The executable is
+  now `StarExtract.exe`, per-user data lives in `%AppData%\StarExtract`
+  (settings/components/vault are migrated automatically from the old
+  `%AppData%\Easy7ZipModern` folder on first launch), and the installer replaces
+  earlier "Easy 7-Zip Modern" releases in place (same upgrade code, Explorer
+  context-menu entries are re-registered under the new name)
+- **Unified downloader** — the Components updater and the File-Type Scanner now
+  share one download/install engine (progress, speed readout, cancel)
+- **Scanner auto-download with progress** — when TrID or Magika is missing, the
+  File-Type Scanner window offers a one-click inline downloader (progress bar,
+  speed, cancel) and rescans automatically once installed; TrID's signature
+  definitions download alongside the executable
+- **Magika on-demand** — new **Use Magika (Google AI detector)** toggle in the
+  scan window (persisted in settings) plus a dedicated "Magika File-Type
+  Detector (Google AI)" entry in the Components tab
+- Scanner logic moved into a dedicated `FileScanService`; smarter output when a
+  detector exits without producing results
 
 ### 1.4.0
 - **File-type scanner** — right-click **Scan file type (TrID)** or `/scan`:
@@ -409,6 +451,8 @@ Easy7zipm/
   archive and image formats
 - [PeaZip / pea](https://github.com/peazip/PeaZip) by **Giorgio Tani** — PEA and
   ARC containers
+- [Magika](https://github.com/google/magika) by **Google** — AI-powered file
+  content-type detection (optional second opinion in the File-Type Scanner)
 - [TrID](https://mark0.net/soft-trid-e.html) by **Marco Pontello** — file
   identification from binary signatures (powering the File-Type Scanner)
 - [ExeInfoPE](https://github.com/ExeInfoASL/ExeInfoPe) — executable
@@ -427,7 +471,7 @@ Easy7zipm/
   PowerShell **UIAutomation**
 
 ### Contributors
-- The Easy 7-Zip Modern project contributors
+- The Star Extract project contributors
 
 *Every bundled tool remains the property of its authors and is distributed
 under its own license; use `Help → About` and the license files inside `bin\`

@@ -12,12 +12,12 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 . (Join-Path $PSScriptRoot "uia-helpers.ps1")
 
-$buildExe = Join-Path $RepoRoot "src\bin\x64\Release\net48\Easy7ZipModern.exe"
+$buildExe = Join-Path $RepoRoot "src\bin\x64\Release\net48\StarExtract.exe"
 if (-not (Test-Path $buildExe)) { throw "App not found: $buildExe (build first)" }
 
 # The app needs the 7-Zip core (7z.exe/7z.dll), Codecs and bin beside it.
 # Run the exe from the repo root (same layout build-installers.ps1 uses).
-$exePath = Join-Path $RepoRoot "Easy7ZipModern.exe"
+$exePath = Join-Path $RepoRoot "StarExtract.exe"
 Copy-Item $buildExe $exePath -Force
 $shotsDir = Join-Path $RepoRoot "docs\screenshots"
 if (-not (Test-Path $shotsDir)) { New-Item -ItemType Directory -Path $shotsDir -Force | Out-Null }
@@ -46,7 +46,7 @@ $demoDest = Join-Path $env:TEMP "e7z_demo_extract"
 
 # ---------- pin settings.json so a plain file arg opens the BROWSER ----------
 # (EnableDoubleClickQuickExtract=true would route to the auto-closing QuickExtract window)
-$appDataDir = Join-Path $env:APPDATA "Easy7ZipModern"
+$appDataDir = Join-Path $env:APPDATA "StarExtract"
 $settingsPath = Join-Path $appDataDir "settings.json"
 $settingsBackup = "$settingsPath.screenshot-bak"
 $hadSettings = Test-Path $settingsPath

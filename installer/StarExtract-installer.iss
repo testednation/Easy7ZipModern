@@ -1,10 +1,10 @@
-; Easy 7-Zip Modern — Inno Setup script
-; Compile: ISCC.exe Easy7ZipModern-installer.iss /DArch=x64  (or /DArch=x86)
+; Star Extract — Inno Setup script
+; Compile: ISCC.exe StarExtract-installer.iss /DArch=x64  (or /DArch=x86)
 ;
 ; Optional overrides (all have local defaults):
-;   /DRepoRoot="C:\path\to\Easy7zipm"    repo checkout (src, bin, README.md)
+;   /DRepoRoot="C:\path\to\StarExtract"    repo checkout (src, bin, README.md)
 ;   /DPayloadRoot="C:\temp\installer"    staging + output folder
-;   /DAppVersion="1.4.0"                 version embedded in the setup exe
+;   /DAppVersion="1.5.0"                 version embedded in the setup exe
 ; tools\stage-payload.ps1 prepares the payload folders; CI passes /D overrides
 ; so it never depends on absolute local paths.
 ;
@@ -18,15 +18,15 @@
 ; also detects installs in *any* registry hive (HKLM x64/x86, HKCU), prefills
 ; the previous directory, and reports the version it is upgrading from.
 
-#define MyAppName "Easy 7-Zip Modern"
-#define MyAppPublisher "Easy 7-Zip Modern Project"
-#define MyAppExeName "Easy7ZipModern.exe"
+#define MyAppName "Star Extract"
+#define MyAppPublisher "Star Extract Project"
+#define MyAppExeName "StarExtract.exe"
 ; Stable upgrade code — never change this between releases.
 #define MyAppId "{7E1A2C64-9B3D-4E7F-9C2A-5F0D8B1A4E6C}"
 
 ; ---- overridable paths / version (defaults = this developer machine) ----
 #ifndef RepoRoot
-  #define RepoRoot "C:\Users\Administrator\Documents\Easy7zipm"
+  #define RepoRoot "C:\Users\Administrator\Documents\StarExtract"
 #endif
 #define RepoRootN RemoveBackslashUnlessRoot(RepoRoot)
 #ifndef PayloadRoot
@@ -34,7 +34,7 @@
 #endif
 #define PayloadRootN RemoveBackslashUnlessRoot(PayloadRoot)
 #ifndef AppVersion
-  #define AppVersion "1.4.0"
+  #define AppVersion "1.5.0"
 #endif
 #define MyAppVersion AppVersion
 
@@ -81,7 +81,7 @@ VersionInfoProductVersion={#MyAppVersion}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright=MIT-style license; see bundled licenses
 OutputDir={#PayloadRootN}\output
-OutputBaseFilename=Easy7ZipModern-{#MyAppVersion}-setup-{#OutSuffix}
+OutputBaseFilename=StarExtract-{#MyAppVersion}-setup-{#OutSuffix}
 Compression=lzma2/normal
 SolidCompression=yes
 LZMANumBlockThreads=4
@@ -92,7 +92,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "contextmenu"; Description: "Add Easy 7-Zip context menu options for all files and folders"; GroupDescription: "Windows Explorer Integration"; Flags: checkedonce
+Name: "contextmenu"; Description: "Add Star Extract context menu options for all files and folders"; GroupDescription: "Windows Explorer Integration"; Flags: checkedonce
 
 [Files]
 ; Application + arch-matched 7-Zip core + codecs + help
@@ -157,7 +157,7 @@ begin
     netRelease := 0;
   if netRelease < 528040 then
   begin
-    if MsgBox('Easy 7-Zip Modern requires Microsoft .NET Framework 4.8, which was not detected.' #13#10 #13#10 'Install it from:' #13#10 'https://dotnet.microsoft.com/download/dotnet-framework/net48' #13#10 #13#10 'Continue setup anyway?', mbCriticalError, MB_YESNO) = IDNO then
+    if MsgBox('Star Extract requires Microsoft .NET Framework 4.8, which was not detected.' #13#10 #13#10 'Install it from:' #13#10 'https://dotnet.microsoft.com/download/dotnet-framework/net48' #13#10 #13#10 'Continue setup anyway?', mbCriticalError, MB_YESNO) = IDNO then
     begin
       Result := False;
       Exit;

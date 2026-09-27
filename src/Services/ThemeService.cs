@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Easy7ZipModern.Models;
+using StarExtract.Models;
 
-namespace Easy7ZipModern.Services;
+namespace StarExtract.Services;
 
 public class ThemeService
 {

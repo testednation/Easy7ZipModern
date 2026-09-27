@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Easy7ZipModern;public partial class PasswordPromptWindow : Window
+namespace StarExtract;public partial class PasswordPromptWindow : Window
 {
     public string Password { get; private set; }
 

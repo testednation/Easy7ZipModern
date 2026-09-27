@@ -2,16 +2,20 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using Easy7ZipModern.Models;
-using Easy7ZipModern.Services;
+using StarExtract.Models;
+using StarExtract.Services;
 
-namespace Easy7ZipModern;
+namespace StarExtract;
 
 public partial class App : Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        // Migrate per-user data from the legacy %AppData%\Easy7ZipModern folder
+        // (pre-rename releases) into %AppData%\StarExtract on first launch.
+        AppPaths.EnsureMigrated();
 
         string fileArg = null;
         bool extractMode = false;
@@ -195,7 +199,7 @@ public partial class App : Application
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Failed to compress: " + ex.Message, "Easy 7-Zip Modern", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Failed to compress: " + ex.Message, "Star Extract", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

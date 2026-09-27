@@ -5,8 +5,8 @@
     <TargetFramework>net48</TargetFramework>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <AssemblyName>Easy7ZipModern</AssemblyName>
-    <RootNamespace>Easy7ZipModern</RootNamespace>
+    <AssemblyName>StarExtract</AssemblyName>
+    <RootNamespace>StarExtract</RootNamespace>
     <LangVersion>11.0</LangVersion>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <!-- Default to x64; pass -p:Platform=x86 to build the 32-bit variant -->
@@ -15,11 +15,11 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <Version>1.4.0</Version>
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
-    <FileVersion>1.4.0.0</FileVersion>
-    <Product>Easy 7-Zip Modern</Product>
-    <AssemblyTitle>Easy 7-Zip Modern - Universal Extractor Edition</AssemblyTitle>
+    <Version>1.5.0</Version>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+    <FileVersion>1.5.0.0</FileVersion>
+    <Product>Star Extract</Product>
+    <AssemblyTitle>Star Extract - Universal Extractor Edition</AssemblyTitle>
     <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
 

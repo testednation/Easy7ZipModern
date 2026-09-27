@@ -50,7 +50,7 @@ jobs:
         shell: pwsh
         run: |
           $arch = "${{ matrix.arch }}"
-          & ISCC.exe installer\Easy7ZipModern-installer.iss `
+          & ISCC.exe installer\StarExtract-installer.iss `
             "/DArch=$arch" `
             "/DRepoRoot=${{ github.workspace }}" `
             "/DPayloadRoot=$env:RUNNER_TEMP\installer" `
@@ -60,8 +60,8 @@ jobs:
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Easy7ZipModern-setup-${{ matrix.arch }}
-          path: ${{ runner.temp }}/installer/output/Easy7ZipModern-*-setup-${{ matrix.arch }}.exe
+          name: StarExtract-setup-${{ matrix.arch }}
+          path: ${{ runner.temp }}/installer/output/StarExtract-*-setup-${{ matrix.arch }}.exe
           if-no-files-found: error
 
   release:

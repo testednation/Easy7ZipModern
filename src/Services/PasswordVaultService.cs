@@ -4,28 +4,17 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Easy7ZipModern.Services;
+namespace StarExtract.Services;
 
 public class PasswordVaultService
 {
+    // NOTE: keep this entropy constant even though the product was renamed —
+    // changing it would make DPAPI unable to decrypt vaults saved by older builds.
     private static readonly byte[] Entropy = Encoding.UTF8.GetBytes("Easy7ZipModernVaultSecurityKey2026");
 
     private readonly List<string> _passwords = new List<string>();
 
-    private static string VaultFilePath
-    {
-        get
-        {
-            string dir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "Easy7ZipModern");
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-            return Path.Combine(dir, "vault.dat");
-        }
-    }
+    private static string VaultFilePath => AppPaths.VaultFile;
 
     public IReadOnlyList<string> Passwords => _passwords.AsReadOnly();
 
