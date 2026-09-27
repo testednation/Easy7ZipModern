@@ -3,7 +3,7 @@ $ErrorActionPreference = "Stop"
 
 $version = "1.5.0"
 $rootDir = $PSScriptRoot
-if (-not $rootDir) { $rootDir = "C:\Users\Administrator\Documents\Easy7zipm" }
+if (-not $rootDir) { $rootDir = "C:\Users\Administrator\Documents\StarExtract" }
 
 $env:PATH = "C:\Program Files\dotnet;C:\temp\dotnet-sdk;C:\Program Files\Inno Setup 7;C:\temp\installer\tools\innoportable\{app};" + $env:PATH
 
