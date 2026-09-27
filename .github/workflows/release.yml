@@ -32,8 +32,9 @@ jobs:
       - name: Install Inno Setup
         shell: pwsh
         run: |
+          # Inno Setup installers moved to GitHub releases; files.jrsoftware.org 404s now.
           $exe = "$env:RUNNER_TEMP\innosetup.exe"
-          Invoke-WebRequest -Uri "https://files.jrsoftware.org/is/6/innosetup-6.7.3.exe" -OutFile $exe
+          Invoke-WebRequest -Uri "https://github.com/jrsoftware/issrc/releases/download/is-6_7_3/innosetup-6.7.3.exe" -OutFile $exe
           Start-Process -FilePath $exe -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -Wait
           Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Inno Setup 6"
 

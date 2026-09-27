@@ -82,11 +82,11 @@ Write-Host "`n[3/4] Compiling Installers with Inno Setup..." -ForegroundColor Ye
 $issPath = "$rootDir\installer\StarExtract-installer.iss"
 
 Write-Host "Compiling x64 installer..." -ForegroundColor Gray
-& $isccExe $issPath /DArch=x64
+& $isccExe $issPath /DArch=x64 "/DRepoRoot=$rootDir"
 if ($LASTEXITCODE -ne 0) { throw "ISCC x64 compilation failed with exit code $LASTEXITCODE" }
 
 Write-Host "Compiling x86 installer..." -ForegroundColor Gray
-& $isccExe $issPath /DArch=x86
+& $isccExe $issPath /DArch=x86 "/DRepoRoot=$rootDir"
 if ($LASTEXITCODE -ne 0) { throw "ISCC x86 compilation failed with exit code $LASTEXITCODE" }
 
 # 6. Copy output

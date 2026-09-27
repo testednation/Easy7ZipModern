@@ -53,7 +53,7 @@ $hadSettings = Test-Path $settingsPath
 if ($hadSettings) { Move-Item $settingsPath $settingsBackup -Force }
 New-Item -ItemType Directory -Path $appDataDir -Force | Out-Null
 @"
-{""IsDarkMode"":true,""ThemeName"":""Dark"",""EnableDoubleClickQuickExtract"":false,""RememberPasswords"":true,""AutoTrySavedPasswords"":true,""OpenFolderAfterExtraction"":false,""DeleteSourceAfterExtraction"":false,""OverwriteMode"":""Overwrite"",""UiScale"":1.0,""EnableContextMenu"":false,""ContextMenuCascaded"":false,""ContextMenuIcons"":true,""ContextMenuOpen"":true,""ContextMenuExtractFiles"":true,""ContextMenuExtractHere"":true,""ContextMenuExtractTo"":true,""ContextMenuTest"":true,""ContextMenuAdd"":true,""ContextMenuAdd7z"":true,""ContextMenuAddZip"":true,""ContextMenuCrcSha"":true,""ContextMenuScanFileType"":true}
+{""IsDarkMode"":true,""ThemeName"":""Dark"",""EnableDoubleClickQuickExtract"":false,""RememberPasswords"":true,""AutoTrySavedPasswords"":true,""OpenFolderAfterExtraction"":false,""DeleteSourceAfterExtraction"":false,""OverwriteMode"":""Overwrite"",""UiScale"":1.0,""EnableContextMenu"":false,""ContextMenuCascaded"":false,""ContextMenuIcons"":true,""ContextMenuOpen"":true,""ContextMenuExtractFiles"":true,""ContextMenuExtractHere"":true,""ContextMenuExtractTo"":true,""ContextMenuTest"":true,""ContextMenuAdd"":true,""ContextMenuAdd7z"":true,""ContextMenuAddZip"":true,""ContextMenuCrcSha"":true,""ContextMenuScanFileType"":true,""ScanUseMagika"":false}
 "@ | ForEach-Object { $_ -replace '""', '"' } | Set-Content -Path $settingsPath -Encoding ASCII
 
 function Wait-MainWindow {
